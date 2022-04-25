@@ -253,7 +253,7 @@ static int lz4_block_decompress_fast(lua_State *L)
   {
     int r;
     LUABUFF_NEW(b, out, out_len)
-    r = LZ4_decompress_fast(in, out, out_len);
+    r = LZ4_decompress_safe(in, out, in_len, out_len);
     if (r < 0)
     {
       LUABUFF_FREE(out)
@@ -718,7 +718,7 @@ static int lz4_ds_decompress_fast(lua_State *L)
       ring = ds->buffer;
       new_position = out_len;
     }
-    r = LZ4_decompress_fast_continue(&ds->handle, in, ring, out_len);
+    r = LZ4_decompress_safe_continue(&ds->handle, in, ring, in_len, out_len);
     if (r < 0) return luaL_error(L, "corrupt input or need more output space");
     ds->buffer_position = new_position;
     lua_pushlstring(L, ring, out_len);
@@ -726,7 +726,7 @@ static int lz4_ds_decompress_fast(lua_State *L)
   else
   { // RING_POLICY_EXTERNAL
     LUABUFF_NEW(b, out, out_len)
-    r = LZ4_decompress_fast_continue(&ds->handle, in, out, out_len);
+    r = LZ4_decompress_safe_continue(&ds->handle, in, out, in_len, out_len);
     if (r < 0)
     {
       LUABUFF_FREE(out)
