@@ -12,7 +12,7 @@ This Lua binding is in conformance with the LZ4 block and frame specifications a
     license = "Apache License 2.0"
   }
   dependencies = {
-    "lua >= 5.1, < 5.4"
+    "lua >= 5.1"
   }
   build = {
     type = "make",
